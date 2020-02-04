@@ -10,8 +10,12 @@ admin.initializeApp();
 exports.addAssignments = functions.firestore
 .document('Assignments/{assignmentID}')
 .onCreate((snap, context) => {
-    console.log("Hello World!");
     const assignemt = snap.data();
     const subject = assignemt.Subject;
-    console.log(subject);
+    var message = {
+        data: {
+            Title: "New assignemnt added!",
+            Subject: subject 
+        }
+    }
 });
