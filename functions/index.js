@@ -10,12 +10,20 @@ admin.initializeApp();
 exports.addAssignments = functions.firestore
 .document('Assignments/{assignmentID}')
 .onCreate((snap, context) => {
+    const topic = 'assignmentNotifications';
     const assignemt = snap.data();
     const subject = assignemt.Subject;
     var message = {
         data: {
             Title: "New assignemnt added!",
             Subject: subject 
-        }
-    }
+        },
+        topic : topic
+    };
+    admin.messaging().send(message).then((response) => {
+        console.log("Message delivered: ", response);
+    })
+    .catch((error) => {
+        console.log("Error sending message: ", error);
+    });
 });
