@@ -14,16 +14,19 @@ exports.addAssignments = functions.firestore
     const assignemt = snap.data();
     const subject = assignemt.Subject;
     var message = {
-        data: {
-            Title: "New assignemnt added!",
-            Subject: subject 
+        notification: {
+            body: "New assignment added!",
+            title: subject 
         },
         topic : topic
     };
-    admin.messaging().send(message).then((response) => {
-        console.log("Message delivered: ", response);
-    })
-    .catch((error) => {
-        console.log("Error sending message: ", error);
-    });
+    return admin.messaging().send(message)
+        .then((response) => {
+            // Response is a message ID string.
+            console.log('Successfully sent message:', response);
+            return null;
+        })
+        .catch((error) => {
+            console.log('Error sending message:', error);
+        });
 });
